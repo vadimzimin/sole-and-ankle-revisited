@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
+import { theme } from '../../themes/theme';
 
 import { WEIGHTS } from '../../constants';
 
@@ -10,19 +11,44 @@ import ShoeSidebar from '../ShoeSidebar';
 import ShoeGrid from '../ShoeGrid';
 
 const ShoeIndex = ({ sortId, setSortId }) => {
+  const [windowSize, setWindowSize] = useState(getWindowSize());
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log({ windowSize });
+  })
+
+  function getWindowSize() {
+    const { innerWidth, innerHeight } = window;
+    return { innerWidth, innerHeight };
+  }
+
   return (
     <Wrapper>
       <MainColumn>
         <Header>
           <Title>Running</Title>
-          <Select
-            label="Sort"
-            value={sortId}
-            onChange={(ev) => setSortId(ev.target.value)}
-          >
-            <option value="newest">Newest Releases</option>
-            <option value="price">Price</option>
-          </Select>
+          <DesktopSortSelectWrapper>
+            <Select
+              label="Sort"
+              value={sortId}
+              onChange={(ev) => setSortId(ev.target.value)}
+            >
+              <option value="newest">Newest Releases</option>
+              <option value="price">Price</option>
+            </Select>
+          </DesktopSortSelectWrapper>
         </Header>
         <Spacer size={32} />
         <ShoeGrid />
@@ -35,7 +61,9 @@ const ShoeIndex = ({ sortId, setSortId }) => {
             Shoes
           </Breadcrumbs.Crumb>
         </Breadcrumbs>
-        <Spacer size={42} />
+        <DesktopSpacerWrapper>
+          <Spacer size={42} />
+        </DesktopSpacerWrapper>
         <ShoeSidebar />
       </LeftColumn>
     </Wrapper>
@@ -47,10 +75,19 @@ const Wrapper = styled.div`
   flex-direction: row-reverse;
   align-items: baseline;
   gap: 32px;
+  
+  @media ${p => p.theme.queries.tabletAndSmaller} {
+    flex-direction: column-reverse;
+    gap: 0;
+  }
 `;
 
 const LeftColumn = styled.div`
   flex-basis: 248px;
+  
+  @media ${p => p.theme.queries.tabletAndSmaller} {
+    flex-basis: auto;
+  }
 `;
 
 const MainColumn = styled.div`
@@ -66,6 +103,18 @@ const Header = styled.header`
 const Title = styled.h2`
   font-size: 1.5rem;
   font-weight: ${WEIGHTS.medium};
+`;
+
+const DesktopSpacerWrapper = styled.div`
+  @media ${p => p.theme.queries.tabletAndSmaller} {
+    display: none;
+  }
+`;
+
+const DesktopSortSelectWrapper = styled.div`
+  @media ${p => p.theme.queries.phoneAndSmaller} {
+    display: none;
+  }
 `;
 
 export default ShoeIndex;
