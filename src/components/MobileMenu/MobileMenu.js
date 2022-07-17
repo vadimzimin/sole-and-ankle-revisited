@@ -56,7 +56,7 @@ const Overlay = styled(DialogOverlay)`
   left: 0;
   right: 0;
   bottom: 0;
-  background: hsl(0deg 0% 0% / 0.5);
+  background: hsl(220deg 5% 40% / 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,9 +65,9 @@ const Overlay = styled(DialogOverlay)`
 const Content = styled(DialogContent)`
   position: fixed;
   top: 0;
-  left: 20%;
   right: 0;
   bottom: 0;
+  width: 300px;
   background: white;
   padding: 32px;
 
@@ -93,7 +93,7 @@ const KeepProportional = styled.div`
 const Navigation = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 16px;
   align-items: flex-start;
   flex: 0 1 auto;
 `;
@@ -113,7 +113,7 @@ const NavLink = styled.a`
 const Footer = styled.footer`
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 9px;
   align-items: flex-start;
   margin-top: 32px;
 `;
